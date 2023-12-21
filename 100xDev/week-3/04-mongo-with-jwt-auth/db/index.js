@@ -9,26 +9,28 @@ const AdminSchema = new mongoose.Schema({
   // Schema definition here
   username: {
     type: String,
+    unique: true,
   },
   password: {
     type: String,
   },
-  token: {
-    type: String,
-  },
+  // token: {
+  //   type: String,
+  // },
 });
 
 const UserSchema = new mongoose.Schema({
   // Schema definition here
   username: {
     type: String,
+    unique: true,
   },
   password: {
     type: String,
   },
-  token: {
-    type: String,
-  },
+  // token: {
+  //   type: String,
+  // },
   purchasedCourses: [
     {
       type: mongoose.Schema.Types.ObjectId,

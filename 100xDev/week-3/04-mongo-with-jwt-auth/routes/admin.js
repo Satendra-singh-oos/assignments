@@ -98,8 +98,8 @@ router.post("/signin", async (req, res) => {
     //res.cookie("token", token, { expire: new Date() + 9999 });
 
     //saving token in Db
-    adminDoc.token = token;
-    await adminDoc.save();
+    // adminDoc.token = token;
+    // await adminDoc.save();
 
     return res
       .status(200)

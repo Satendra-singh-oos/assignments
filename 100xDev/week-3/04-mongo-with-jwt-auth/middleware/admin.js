@@ -18,22 +18,28 @@ async function adminMiddleware(req, res, next) {
 
     jwt.verify(token, process.env.SECRET, (err, user) => {
       if (err) {
-        return res.status(409).json({ msg: "Yor Token dosent match wow !" });
+        return res
+          .status(409)
+          .json({ msg: "Yor Token dosent match wow only admin alowed!" });
       }
       req.user = user;
-      // next();
+      //next();
     });
 
-    const user = await Admin.findOne({ token: token });
+    // const user = await Admin.findOne({ token: token });
+    const decodeToken = jwt.decode(token);
 
-    if (!user) {
-      return res.status(401).json({ msg: "Only Admin Allowed" });
+    const admin = await Admin.findOne({
+      username: decodeToken.username,
+    });
+
+    if (!admin) {
+      return res.status(401).json({ msg: "No Admin found in db" });
     }
 
-    const tokenInDb = user.token;
-
-    if (tokenInDb != token) {
-      return res.status(401).json({ msg: "Only Admin Allowed" });
+    const role = decodeToken.role;
+    if (role != "admin") {
+      return res.status(401).json({ msg: "Only  Admin is allowed" });
     }
     next();
   } catch (err) {

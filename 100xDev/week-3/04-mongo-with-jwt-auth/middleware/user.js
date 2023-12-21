@@ -19,15 +19,22 @@ async function userMiddleware(req, res, next) {
         return res.status(409).json({ msg: "Yor Token dosent match wow !" });
       }
       req.user = user;
-      // next();
+      //next();
     });
 
-    const user = await User.findOne({ token: token });
+    const decodeToken = jwt.decode(token);
 
-    const tokenInDb = user.token;
+    const user = await User.findOne({
+      username: decodeToken.username,
+    });
 
-    if (tokenInDb != token) {
-      return res.status(401).json({ msg: "Only Admin Allowed" });
+    if (!user) {
+      return res.status(401).json({ msg: "No User found in db" });
+    }
+
+    const role = decodeToken.role;
+    if (role != "user") {
+      return res.status(401).json({ msg: "Only  user is allowed" });
     }
     next();
   } catch (err) {

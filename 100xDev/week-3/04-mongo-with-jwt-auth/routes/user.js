@@ -84,8 +84,8 @@ router.post("/signin", async (req, res) => {
     //res.cookie("token", token, { expire: new Date() + 9999 });
 
     //saving token in Db
-    userDoc.token = token;
-    await userDoc.save();
+    // userDoc.token = token;
+    // await userDoc.save();
 
     return res
       .status(200)
@@ -132,7 +132,14 @@ router.post("/courses/:courseId", userMiddleware, async (req, res) => {
     const authHeader = req.headers.authorization;
     const token = authHeader.split(" ")[1];
 
-    const user = await User.findOne({ token: token });
+    const decodeToken = jwt.decode(token);
+    const userName = decodeToken.username;
+
+    const user = await User.findOne({
+      username: userName,
+    }).populate("purchasedCourses");
+
+    // const user = await User.findOne({ token: token });
     if (!user) {
       return res.status(401).json({ msg: "No user found with these token" });
     }
@@ -162,9 +169,12 @@ router.get("/purchasedCourses", userMiddleware, async (req, res) => {
     const authHeader = req.headers.authorization;
     const token = authHeader.split(" ")[1];
 
-    const user = await User.findOne({ token: token }).populate(
-      "purchasedCourses"
-    );
+    const decodeToken = jwt.decode(token);
+    const userName = decodeToken.username;
+
+    const user = await User.findOne({
+      username: userName,
+    }).populate("purchasedCourses");
 
     if (!user) {
       return res.status(401).json({ msg: "No user found with these token" });
