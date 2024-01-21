@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script>
+    let globalId = 1;
+    let todoState = [];
+    let oldTodoState = [];
+
+    function addTodoToDom(todos) {
+
+      const jsonTodo = JSON.stringify(todos)
+      
+      const todosDiv = document.querySelector("#todos")
+      
+      for(let i=0 ; i<jsonTodo.length; i++){
+      const title = document.createElement("h1")
+      const description = document.createElement("h2")
+
+      title.textContent = todos[i].title;  // Use textContent to set the text of the element
+    description.textContent = todos[i].description;
+
+      todosDiv.appendChild(title)
+      todosDiv.appendChild(description)
+      }
+    }
+
+    function removeTodoFromDom(todo) {
+      
+    }
+
+    function updateTodoInDom(oldTodo, newTodo) {
+        
+    }
+
+    function updateState(newTodos) {
+      // calculate the diff b/w newTodos and oldTodos.
+      // More specifically, find out what todos are - 
+      // 1. added
+      // 2. deleted
+      // 3. updated
+      const added = [];
+      const deleted = [];
+      const updated = [];
+      // calculate these 3 arrays
+      // call addTodo, removeTodo, updateTodo functions on each of the
+      // elements
+
+      addTodo(newTodos)
+      console.log("newTodo:-"+JSON.stringify(newTodos))
+      oldTodoState = newTodos;
+
+      console.log("oldTodoState:-" +JSON.stringify(oldTodoState))
+    }
+
+    function addTodo() {
+      const title = document.getElementById("title").value;
+      const description = document.getElementById("description").value;
+      todoState.push({
+        title: title,
+        description: description,
+        id: globalId++,
+      })
+    
+      updateState(todoState);
+    }
+  </script>
+</head>
+
+<body>
+  <input type="text" id="title" placeholder="Todo title"></input> <br /><br />
+  <input type="text" id="description" placeholder="Todo description"></input> <br /><br />
+  <button onclick="addTodo()">Add todo</button>
+  <br /> <br />
+
+  <div id="todos">
+
+  </div>
+</body>
+
+</html>
