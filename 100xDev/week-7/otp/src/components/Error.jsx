@@ -8,8 +8,8 @@ const Error = () => {
     navigate("/");
   };
   return (
-    <div>
-      <h1>Not Valid OTP !! 🫠</h1>
+    <div className="flex items-center justify-center flex-col gap-7">
+      <h1 className="text-7xl">Not Valid OTP !! 🫠</h1>
       <button
         onClick={handleClick}
         className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg"

@@ -23,7 +23,7 @@ const HomePage = () => {
   };
 
   return (
-    <div>
+    <div className="flex items-center justify-center">
       <form onSubmit={genrateOtp} className="space-x-3 mt-12">
         <input
           type="text"

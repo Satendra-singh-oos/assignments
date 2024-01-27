@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { deleteOtp } from "../features/otpSlice";
 
 const Verifyotp = () => {
   const otp = useSelector((state) => state.otp);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [inputs, setInputs] = useState(["", "", "", ""]);
 
@@ -16,13 +18,6 @@ const Verifyotp = () => {
         newInputs[index] = value;
         return newInputs;
       });
-    } else if (value.length === 0) {
-      // Allow deletion if the input is empty
-      setInputs((prevInputs) => {
-        const newInputs = [...prevInputs];
-        newInputs[index] = ""; // Empty the input at the specified index
-        return newInputs;
-      });
     }
   };
 
@@ -32,10 +27,11 @@ const Verifyotp = () => {
 
   const verifyOtp = () => {
     const enteredOtp = inputs.join("");
-    console.log(enteredOtp);
     if (Number(enteredOtp) !== otp) {
+      dispatch(deleteOtp());
       return navigate("/error");
     }
+    dispatch(deleteOtp());
     navigate("/hello");
   };
   return (
